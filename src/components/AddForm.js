@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { onError, addSmurf } from '../actions';
 
-const AddForm = (props) => {
+
+const AddForm = ({errorMessage, dispatch}) => {
+    const [error, showError] = useState(false)
     const [state, setState] = useState({
         name:"",
         position:"",
@@ -9,21 +13,22 @@ const AddForm = (props) => {
     });
 
     //remove when error state is added
-    const errorMessage = "";
 
     const handleChange = e => {
         setState({
             ...state,
-            [e.target.name]:e.target.value
+            [e.target.name]:e.target.value,
+            id: 1000
         });
     }
 
     const handleSubmit = e => {
         e.preventDefault();
         if (state.name === "" || state.position === "" || state.nickname === "") {
-            //dispatch a custom error action
+            showError(true)
+            return dispatch(onError())
         } else {
-            //dispatch an addSmurf action
+            return dispatch(addSmurf(state))
         }
     }
 
@@ -46,15 +51,24 @@ const AddForm = (props) => {
                 <label htmlFor="description">Description:</label><br/>
                 <textarea onChange={handleChange} value={state.description} name="description" id="description" />
             </div>
-            {
-                errorMessage && <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error: {errorMessage}</div>
-            }
+            <div>
+                { 
+                    // COULD NOT FIGURE OUT WHY ERROR MESSAGE WONT RETURN TRUTHY
+                    error && <div data-testid="errorAlert" className="alert alert-danger" role="alert"> Error: Please fill out all fields </div> 
+                }
+            </div>
             <button>Submit Smurf</button>
         </form>
     </section>);
 }
 
-export default AddForm;
+const mapStateToProps = (state) => {
+    return {
+        errorMessage: ""
+    }
+}
+
+export default connect(mapStateToProps)(AddForm);
 
 //Task List:
 //1. Connect the errorMessage, setError and addSmurf actions to the AddForm component.

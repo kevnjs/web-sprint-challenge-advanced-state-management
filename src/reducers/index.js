@@ -1,8 +1,34 @@
+export const FETCH_START = "FETCH_START";
+export const FETCH_SUCCESS = "FETCH_SUCCESS";
+export const FETCH_FAIL = "FETCH_FAIL";
+export const ADD_SMURF = "ADD_SMURF";
+export const SET_ERROR ="SET_ERROR";
 
 export const initialState = {
+    smurfs: [],
+    loadState: false,
+    errorMessage: ""
 }
 
-const reducer = ()=>{
+const reducer = (state = initialState, action)=>{
+
+    switch(action.type) {
+        case FETCH_START:
+            return {...state, loadState: true}
+        case FETCH_SUCCESS: 
+            return {...state, smurfs: action.payload, loadState: false, }
+        case FETCH_FAIL: 
+            return {
+                ...state, 
+                loadState: false, 
+                errorMessage: action.payload
+            }
+        case ADD_SMURF:
+            return {...state, 
+                    smurfs: [...state.smurfs, action.payload]
+                }
+        default: return state;
+    }
 }
 
 //**************DO NOT EDIT ANY CODE BEYOND THIS POINT**************//
