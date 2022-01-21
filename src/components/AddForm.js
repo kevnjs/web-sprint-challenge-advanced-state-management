@@ -27,6 +27,12 @@ const AddForm = ({errorMessage, dispatch}) => {
             dispatch(failFetch("Error: Please fill out all fields"))
         } else {
             dispatch(addSmurf(state))
+            setState({
+                name:"",
+                position:"",
+                nickname:"",
+                description:""
+            })
         }
     }
 
