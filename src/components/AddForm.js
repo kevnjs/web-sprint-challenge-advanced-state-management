@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { onError, addSmurf } from '../actions';
+import { failFetch, addSmurf } from '../actions';
 
 
 const AddForm = ({errorMessage, dispatch}) => {
-    const [error, showError] = useState(false)
     const [state, setState] = useState({
         name:"",
         position:"",
@@ -25,10 +24,9 @@ const AddForm = ({errorMessage, dispatch}) => {
     const handleSubmit = e => {
         e.preventDefault();
         if (state.name === "" || state.position === "" || state.nickname === "") {
-            showError(true)
-            return dispatch(onError())
+            dispatch(failFetch("Error: Please fill out all fields"))
         } else {
-            return dispatch(addSmurf(state))
+            dispatch(addSmurf(state))
         }
     }
 
@@ -53,8 +51,7 @@ const AddForm = ({errorMessage, dispatch}) => {
             </div>
             <div>
                 { 
-                    // COULD NOT FIGURE OUT WHY ERROR MESSAGE WONT RETURN TRUTHY
-                    error && <div data-testid="errorAlert" className="alert alert-danger" role="alert"> Error: Please fill out all fields </div> 
+                    errorMessage && <div data-testid="errorAlert" className="alert alert-danger" role="alert"> {errorMessage} </div> 
                 }
             </div>
             <button>Submit Smurf</button>
@@ -64,7 +61,7 @@ const AddForm = ({errorMessage, dispatch}) => {
 
 const mapStateToProps = (state) => {
     return {
-        errorMessage: ""
+        errorMessage: state.errorMessage
     }
 }
 

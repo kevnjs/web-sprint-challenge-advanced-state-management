@@ -10,12 +10,6 @@ export const onPageLoad = () => {
     }
 }
 
-export const onError = () => {
-    return (dispatch) => {
-        dispatch(failFetch("Error: Please fill out all fields"))
-    }
-}
-
 //===================================================
 export const startFetch = () => {
     return {type: FETCH_START}

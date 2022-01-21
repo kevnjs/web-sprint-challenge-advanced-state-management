@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import AddForm from './components/AddForm';
 import SmurfList from './components/SmurfList';
 import Header from './components/Header';
@@ -24,18 +24,8 @@ const App = ({dispatch})=> {
     </div>
   );
 }
-const mapStateToProps = state => {
-  return {
-        smurfs: state.smurfs,
-        loadState: state.loadState,
-        errorMessage: {
-          error: "",
-          bool: false
-        }
-  }
-}
 
-export default connect(mapStateToProps)(App);
+export default connect()(App);
 
 //Task List:
 //1. Connect the fetchSmurfs actions to the App component.
